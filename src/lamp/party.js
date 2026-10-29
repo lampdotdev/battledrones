@@ -13,7 +13,7 @@ import { Controller, hitTest } from "../game/controller.js";
 import { BUILDINGS, UNITS } from "../sim/balance.js";
 import { buildingBlocker, unitBlocker } from "../sim/economy.js";
 import { isVisible } from "../sim/fog.js";
-import { unitCost } from "../sim/goliath.js";
+import { anchoredGoliaths, unitCost } from "../sim/goliath.js";
 import { unitSeenBy } from "../sim/infantry.js";
 import { mapById } from "../sim/maps.js";
 import { suggestPlacement } from "../sim/placement.js";
@@ -64,8 +64,10 @@ class Seat {
     drain() {
         const w = this.world, pending = w.factions[this.side].pending;
         if (pending?.ready && !this.placed) {
-            const hq = hqOf(w, this.side);
-            const at = suggestPlacement(w, this.side, pending.kind, hq ? buildingCenter(hq) : undefined);
+            // Near the HQ, or with none (Nomads, or the HQ fallen) near the first Goliath dug in; with neither there's
+            // nowhere to build.
+            const hq = hqOf(w, this.side), anchor = hq ? buildingCenter(hq) : anchoredGoliaths(w, this.side)[0];
+            const at = anchor ? suggestPlacement(w, this.side, pending.kind, anchor) : null;
             if (at) {
                 this.ctrl.enqueue({ type: "placeBuilding", faction: this.side, tx: at.tx, ty: at.ty });
                 this.placed = true;
@@ -499,6 +501,14 @@ export function frame(f) {
             if (pad.pressed & BUTTON.B) stand({ kind: "pad", pad: i });
             if (pad.pressed & BUTTON.MENU) start();
         });
+        return;
+    }
+    // The match is over: the corner tables go, and controllers move through the report's buttons again.
+    if (party.scene?.over) {
+        if (pads.off) {
+            matchEnded();
+            pads.off = false;
+        }
         return;
     }
     for (const seat of party.seats.values()) {
