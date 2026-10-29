@@ -29267,6 +29267,11 @@ function frame2(f) {
   }
   if (party.scene?.over) {
     if (pads.off) {
+      for (const player of party.phones.keys()) {
+        const seat = seatOfPhone(player);
+        if (seat?.ctrl)
+          sendState(player, seat);
+      }
       matchEnded();
       pads.off = false;
     }
