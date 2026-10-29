@@ -1,8 +1,12 @@
+<p align="center"><img src=".github/icon/icon.png" width="128" height="128" alt=""></p>
+
 <h1 align="center">Battle Drones</h1>
 
 <p align="center">Simon Willison's Battle Drones: a drone war for up to four, with phones as controllers.</p>
 
 <p align="center"><a href="https://lampdotdev.github.io/battledrones/"><img src=".github/play-in-browser.svg" width="220" height="48" alt="Play in your browser"></a>&nbsp;&nbsp;<a href="https://lamp.dev/?repo=https://github.com/lampdotdev/battledrones&amp;from=readme"><img src=".github/open-in-lamp.svg" width="164" height="48" alt="Open in Lamp"></a></p>
+
+<p align="center"><img src=".github/preview.png" width="720" alt="Battle Drones"></p>
 
 ## Make Battle Drones yours
 
