@@ -503,9 +503,15 @@ export function frame(f) {
         });
         return;
     }
-    // The match is over: the corner tables go, and controllers move through the report's buttons again.
+    // The match is over: the phones get the state with the winner once more, the corner tables go, and controllers
+    // move through the report's buttons again.
     if (party.scene?.over) {
         if (pads.off) {
+            for (const player of party.phones.keys()) {
+                const seat = seatOfPhone(player);
+                if (seat?.ctrl)
+                    sendState(player, seat);
+            }
             matchEnded();
             pads.off = false;
         }
