@@ -28830,8 +28830,8 @@ class Seat {
   drain() {
     const w = this.world, pending = w.factions[this.side].pending;
     if (pending?.ready && !this.placed) {
-      const hq = hqOf(w, this.side);
-      const at3 = suggestPlacement(w, this.side, pending.kind, hq ? buildingCenter(hq) : undefined);
+      const hq = hqOf(w, this.side), anchor = hq ? buildingCenter(hq) : anchoredGoliaths(w, this.side)[0];
+      const at3 = anchor ? suggestPlacement(w, this.side, pending.kind, anchor) : null;
       if (at3) {
         this.ctrl.enqueue({ type: "placeBuilding", faction: this.side, tx: at3.tx, ty: at3.ty });
         this.placed = true;
@@ -29265,6 +29265,13 @@ function frame2(f) {
     });
     return;
   }
+  if (party.scene?.over) {
+    if (pads.off) {
+      matchEnded();
+      pads.off = false;
+    }
+    return;
+  }
   for (const seat of party.seats.values()) {
     seat.ctrl?.prune();
     if (seat.who.kind === "pad")
@@ -29281,6 +29288,11 @@ function frame2(f) {
     for (const [side, panel] of party.panels)
       panel.draw(party.seats.get(side));
   }
+}
+function matchEnded() {
+  for (const panel of party.panels.values())
+    panel.el.remove();
+  party.panels.clear();
 }
 function makePanel(seat, corner) {
   const el = document.createElement("div");
