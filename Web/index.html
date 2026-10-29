@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#070a10" />
+    <title>Battle Drones</title>
+    <link rel="icon" href="data:," />
+    <!-- Battle Drones by Simon Willison (Apache License 2.0, LICENSE-battledrones), played on Lamp. Its TypeScript is in
+         src/; Lamp bundles it into app/ before every build. -->
+    <link rel="stylesheet" href="app/main.css" />
+    <!-- Lamp's building blocks for the page (LampAI, LampStore, Lamp.controllers for phones) -->
+    <script src="lamp.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./three/three.module.js",
+          "three/examples/jsm/": "./three/addons/",
+          "lamp-game": "./lamp-game.js",
+          "qrcode-generator": "./lib/qrcode.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <div id="game"></div>
+      <div id="hud"></div>
+    </div>
+    <script type="module" src="app/main.js"></script>
+  </body>
+</html>
